@@ -3,11 +3,11 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import {
-  PhCheck,
-  PhSparkle,
-  PhLightning,
-  PhCrown,
-  PhArrowRight,
+  Check,
+  Sparkle,
+  Lightning,
+  Crown,
+  ArrowRight,
 } from "@phosphor-icons/react";
 import Link from "next/link";
 
@@ -90,7 +90,7 @@ export function PricingSection() {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-bright/10 border border-gold-bright/20 mb-6">
-            <PhSparkle className="w-4 h-4 text-gold-bright" />
+            <Sparkle className="w-4 h-4 text-gold-bright" />
             <span className="text-sm font-medium text-gold-bright">
               Simple Pricing
             </span>
@@ -134,7 +134,7 @@ export function PricingSection() {
         {/* Pricing cards */}
         <div className="grid lg:grid-cols-3 gap-8">
           {PLANS.map((plan, i) => {
-            const Icon = i === 0 ? Zap : i === 1 ? Sparkles : Crown;
+            const Icon = i === 0 ? Lightning : i === 1 ? Sparkle : Crown;
             const price = isYearly ? plan.price.yearly : plan.price.monthly;
             const period = isYearly ? "/year" : "/month";
 
@@ -205,7 +205,7 @@ export function PricingSection() {
                   }`}
                 >
                   {plan.cta}
-                  <PhArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
 
                 {/* Features */}
@@ -219,7 +219,7 @@ export function PricingSection() {
                             : "bg-white/10 text-white"
                         }`}
                       >
-                        <PhCheck className="w-3 h-3" />
+                        <Check className="w-3 h-3" />
                       </div>
                       <span className="text-sm text-text-secondary">
                         {feature}
@@ -258,7 +258,7 @@ export function PricingSection() {
             className="inline-flex items-center gap-2 text-atlantean-teal-aqua hover:underline"
           >
             Contact Sales
-            <PhArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>
       </div>

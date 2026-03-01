@@ -3,22 +3,22 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import {
-  PhSparkle,
-  PhBrain,
-  PhPalette,
-  PhBookOpen,
-  PhZap,
-  PhShield,
-  PhChatCircle,
-  PhLayers,
-  PhWand,
-  PhGraduationCap,
-  PhUsers,
+  Sparkle,
+  Brain,
+  Palette,
+  BookOpen,
+  Lightning,
+  Shield,
+  ChatCircle,
+  Stack,
+  MagicWand,
+  GraduationCap,
+  Users,
 } from "@phosphor-icons/react";
 
 const MAIN_FEATURES = [
   {
-    icon: PhSparkle,
+    icon: Sparkle,
     title: "16 Luminor Intelligences",
     description:
       "Each Luminor has internalized a specific Guardian archetype — patterns of how the greatest creators actually work. They will challenge a weak idea before you waste time building it.",
@@ -26,7 +26,7 @@ const MAIN_FEATURES = [
     highlight: "atlantean-teal-aqua",
   },
   {
-    icon: PhBrain,
+    icon: Brain,
     title: "Seven Wisdoms Framework",
     description:
       "Stuck? Lost? Afraid? Seven diagnostic lenses for the most common creative blocks. Sophron sees structure. Kardia feels heart. Valora demands courage. Each Wisdom reveals what you cannot see alone.",
@@ -34,7 +34,7 @@ const MAIN_FEATURES = [
     highlight: "gold-bright",
   },
   {
-    icon: PhUsers,
+    icon: Users,
     title: "Ten Gates of Mastery",
     description:
       "Each Gate corresponds to a specific creative capacity — from grounding your vision (174 Hz) to achieving meta-consciousness about creation itself (1111 Hz). Not gamification. A developmental framework.",
@@ -45,42 +45,42 @@ const MAIN_FEATURES = [
 
 const CAPABILITY_GRID = [
   {
-    icon: PhChatCircle,
+    icon: ChatCircle,
     title: "Guardian-Guided Dialogue",
     description: "Conversations shaped by archetypal wisdom, not generic prompts",
   },
   {
-    icon: PhPalette,
+    icon: Palette,
     title: "Visual Creation",
     description: "Generate images and concept art through elemental aesthetics",
   },
   {
-    icon: PhBookOpen,
+    icon: BookOpen,
     title: "Story & World Building",
     description: "Build mythologies, narratives, and living lore systems",
   },
   {
-    icon: PhWand,
+    icon: MagicWand,
     title: "Music Composition",
     description: "Compose at the frequencies of the Ten Gates",
   },
   {
-    icon: PhGraduationCap,
+    icon: GraduationCap,
     title: "The Academy",
     description: "Progress through Gates, each unlocking a creative capacity",
   },
   {
-    icon: PhUsers,
+    icon: Users,
     title: "Multi-Intelligence Sessions",
     description: "Multiple Luminors collaborating on a single project",
   },
   {
-    icon: PhShield,
+    icon: Shield,
     title: "Private & Secure",
     description: "Your creations and creative process remain yours",
   },
   {
-    icon: PhLayers,
+    icon: Stack,
     title: "The Library",
     description: "17 collections of original philosophy for the creative life",
   },
@@ -101,7 +101,7 @@ export function FeaturesV2() {
           className="text-center mb-20"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-atlantean-teal-aqua/10 border border-atlantean-teal-aqua/20 mb-6">
-            <PhZap className="w-4 h-4 text-atlantean-teal-aqua" />
+            <Lightning className="w-4 h-4 text-atlantean-teal-aqua" />
             <span className="text-sm font-medium text-atlantean-teal-aqua">
               The System
             </span>
@@ -231,7 +231,7 @@ export function FeaturesV2() {
             href="/luminors"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 font-semibold hover:bg-white/10 hover:border-white/20 transition-all"
           >
-            <PhSparkle className="w-5 h-5 text-atlantean-teal-aqua" />
+            <Sparkle className="w-5 h-5 text-atlantean-teal-aqua" />
             Explore All Features
           </a>
         </motion.div>

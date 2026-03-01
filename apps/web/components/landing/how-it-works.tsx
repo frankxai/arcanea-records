@@ -2,12 +2,12 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { PhChat, PhSparkle, PhMagicWand, PhRocket, PhArrowRight } from '@phosphor-icons/react';
+import { Chat, Sparkle, MagicWand, Rocket, ArrowRight } from '@phosphor-icons/react';
 
 const STEPS = [
   {
     number: '01',
-    icon: PhChat,
+    icon: Chat,
     title: 'Choose Your Luminor',
     description: 'Pick a Guardian-aligned AI from the ten specialisms — Lyssandria for deep foundations, Draconia for bold execution, Lyria for intuitive vision, or any of the other seven.',
     color: 'atlantean-teal-aqua',
@@ -15,7 +15,7 @@ const STEPS = [
   },
   {
     number: '02',
-    icon: PhSparkle,
+    icon: Sparkle,
     title: 'Open Your Gate',
     description: 'Describe your creative vision. Your Luminor reads your intent and aligns to your current Gate — whether you are an Apprentice exploring or an Archmage refining mastery.',
     color: 'creation-prism-purple',
@@ -23,7 +23,7 @@ const STEPS = [
   },
   {
     number: '03',
-    icon: PhMagicWand,
+    icon: MagicWand,
     title: 'Manifest Together',
     description: 'Co-create across the full Arcanea stack — chat in the Platform, capture with the Vault Extension, automate with Agent Flow, or overlay intelligence onto any tool you already use.',
     color: 'gold-bright',
@@ -31,7 +31,7 @@ const STEPS = [
   },
   {
     number: '04',
-    icon: PhRocket,
+    icon: Rocket,
     title: 'Ascend and Share',
     description: 'Export your creation to any format. Publish on-chain with Arcanea On-Chain. Track your Gate progression in the Academy. Your arc from Apprentice to Luminor is recorded.',
     color: 'draconic-crimson',
@@ -59,7 +59,7 @@ export function HowItWorks() {
           className="text-center mb-20"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-creation-prism-purple/10 border border-creation-prism-purple/20 mb-6">
-            <PhMagicWand className="w-4 h-4 text-creation-prism-purple" />
+            <MagicWand className="w-4 h-4 text-creation-prism-purple" />
             <span className="text-sm font-medium text-creation-prism-purple">Simple Process</span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
@@ -232,7 +232,7 @@ export function HowItWorks() {
                             className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between hover:border-atlantean-teal-aqua/30 transition-colors"
                           >
                             <span className="text-sm">{format}</span>
-                            <PhArrowRight className="w-4 h-4 text-text-muted" />
+                            <ArrowRight className="w-4 h-4 text-text-muted" />
                           </div>
                         ))}
                       </div>

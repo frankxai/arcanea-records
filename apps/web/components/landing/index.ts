@@ -12,3 +12,5 @@ export { HowItWorks } from './how-it-works';
 export { PricingSection } from './pricing-section';
 export { TestimonialsV2 } from './testimonials-v2';
 export { FAQSection } from './faq-section';
+export { CosmicStarField } from './cosmic-star-field';
+export { SectionDivider } from './section-divider';

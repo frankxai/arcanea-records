@@ -3,7 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Check } from "@phosphor-icons/react";
+import { ArrowRight, Sparkle, Check } from "@phosphor-icons/react";
 
 const BENEFITS = [
   "Free to start — your universe begins now",
@@ -222,7 +222,7 @@ export function CTASection() {
                       }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <Sparkles className="w-12 h-12 text-white" />
+                      <Sparkle className="w-12 h-12 text-white" />
                     </motion.div>
                   </div>
                 </motion.div>

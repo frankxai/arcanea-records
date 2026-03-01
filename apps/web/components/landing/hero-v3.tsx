@@ -13,9 +13,9 @@ import {
   ArrowRight,
   Play,
   X,
-  Sparkles,
+  Sparkle,
   Star,
-  Zap,
+  Lightning,
   CaretDown,
 } from "@phosphor-icons/react";
 
@@ -100,25 +100,26 @@ export function HeroV3({ stats }: HeroV3Props) {
       >
         {/* Advanced Gradient Background */}
         <div className="absolute inset-0 -z-20">
-          {/* Base dark */}
-          <div className="absolute inset-0 bg-cosmic-deep" />
+          {/* Base dark with subtle gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-cosmic-void via-cosmic-deep to-cosmic-surface/80" />
 
           {/* Atmospheric Guardian — Shinkami, Source consciousness */}
           <img
             src="/guardians/shinkami-hero.webp"
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover object-top opacity-[0.08] pointer-events-none"
+            className="absolute inset-0 w-full h-full object-cover object-top opacity-[0.06] pointer-events-none mix-blend-luminosity"
           />
 
-          {/* Animated aurora gradients */}
+          {/* Primary aurora - top sweep */}
           <motion.div
             className="absolute inset-0"
             style={{
               background: `
-                radial-gradient(ellipse 100% 100% at 50% -20%, rgba(127,255,212,0.15) 0%, transparent 50%),
-                radial-gradient(ellipse 80% 80% at 80% 50%, rgba(139,92,246,0.1) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 60% at 20% 80%, rgba(255,215,0,0.08) 0%, transparent 50%)
+                radial-gradient(ellipse 120% 80% at 50% -30%, rgba(127,255,212,0.18) 0%, transparent 55%),
+                radial-gradient(ellipse 70% 70% at 85% 40%, rgba(140,61,245,0.12) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 60% at 15% 75%, rgba(255,204,51,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse 90% 40% at 50% 100%, rgba(127,255,212,0.06) 0%, transparent 40%)
               `,
               x: springX,
               y: springY,
@@ -127,59 +128,66 @@ export function HeroV3({ stats }: HeroV3Props) {
 
           {/* Noise texture overlay */}
           <div
-            className="absolute inset-0 opacity-[0.015]"
+            className="absolute inset-0 opacity-[0.02]"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
             }}
           />
 
-          {/* Animated grid lines */}
+          {/* Subtle grid lines fading from top */}
           <div
-            className="absolute inset-0 opacity-[0.02]"
+            className="absolute inset-0 opacity-[0.025]"
             style={{
               backgroundImage: `
-                linear-gradient(90deg, rgba(127,255,212,0.5) 1px, transparent 1px),
-                linear-gradient(rgba(127,255,212,0.5) 1px, transparent 1px)
+                linear-gradient(90deg, rgba(127,255,212,0.4) 1px, transparent 1px),
+                linear-gradient(rgba(127,255,212,0.4) 1px, transparent 1px)
               `,
               backgroundSize: "80px 80px",
               maskImage:
-                "radial-gradient(ellipse 80% 50% at 50% 0%, black 30%, transparent 70%)",
+                "radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 60%)",
             }}
           />
 
-          {/* Floating light orbs */}
-          {[...Array(5)].map((_, i) => (
+          {/* Deep atmospheric orbs with richer colors */}
+          {[
+            { size: 350, x: '15%', y: '20%', color: 'rgba(127,255,212,0.07)', dur: 18 },
+            { size: 280, x: '75%', y: '15%', color: 'rgba(140,61,245,0.06)', dur: 22 },
+            { size: 400, x: '60%', y: '65%', color: 'rgba(255,204,51,0.04)', dur: 25 },
+            { size: 220, x: '30%', y: '70%', color: 'rgba(127,255,212,0.05)', dur: 20 },
+            { size: 320, x: '85%', y: '55%', color: 'rgba(45,133,245,0.04)', dur: 28 },
+            { size: 180, x: '50%', y: '10%', color: 'rgba(255,204,51,0.06)', dur: 16 },
+          ].map((orb, i) => (
             <motion.div
               key={i}
               className="absolute rounded-full"
               style={{
-                width: 200 + i * 100,
-                height: 200 + i * 100,
-                left: `${20 + i * 15}%`,
-                top: `${10 + i * 10}%`,
-                background: `radial-gradient(circle, ${
-                  [
-                    "rgba(127,255,212,0.08)",
-                    "rgba(139,92,246,0.06)",
-                    "rgba(255,215,0,0.05)",
-                    "rgba(127,255,212,0.04)",
-                    "rgba(139,92,246,0.03)",
-                  ][i]
-                } 0%, transparent 70%)`,
-                filter: "blur(40px)",
+                width: orb.size,
+                height: orb.size,
+                left: orb.x,
+                top: orb.y,
+                background: `radial-gradient(circle, ${orb.color} 0%, transparent 70%)`,
+                filter: "blur(50px)",
               }}
               animate={{
-                x: [0, 30, 0, -30, 0],
-                y: [0, -20, 0, 20, 0],
-                scale: [1, 1.1, 1, 0.9, 1],
+                x: [0, 25, 0, -25, 0],
+                y: [0, -18, 0, 18, 0],
+                scale: [1, 1.08, 1, 0.92, 1],
               }}
               transition={{
-                duration: 15 + i * 3,
+                duration: orb.dur,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
             />
           ))}
+
+          {/* Horizon glow — the distant cosmic light */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-[40%]"
+            style={{
+              background: 'linear-gradient(to top, rgba(127,255,212,0.03) 0%, transparent 100%)',
+            }}
+          />
         </div>
 
         {/* Main Content */}
@@ -224,7 +232,7 @@ export function HeroV3({ stats }: HeroV3Props) {
               transition={{ duration: 0.7, delay: 0.1 }}
             >
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-display font-bold tracking-tight leading-[0.9] mb-8">
-                <span className="block text-white">Build Your</span>
+                <span className="block text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.08)]">Build Your</span>
                 <span className="relative inline-block">
                   <motion.span
                     className="relative z-10 bg-gradient-to-r from-atlantean-teal-aqua via-creation-prism-purple via-50% to-gold-bright bg-[length:200%_auto] bg-clip-text text-transparent"
@@ -265,10 +273,10 @@ export function HeroV3({ stats }: HeroV3Props) {
               initial={{ opacity: 0, y: 30 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-xl md:text-2xl lg:text-3xl text-text-secondary max-w-4xl mx-auto mb-12 leading-relaxed font-light"
+              className="text-xl md:text-2xl lg:text-3xl text-text-secondary max-w-4xl mx-auto mb-14 leading-relaxed font-body"
             >
               A mythology-powered creative intelligence system.
-              <span className="block text-white/90 font-normal mt-2">
+              <span className="block text-white/90 font-normal mt-3">
                 Ten Guardians. Seven Wisdoms. One framework for mastering the
                 creative life.
               </span>
@@ -341,7 +349,7 @@ export function HeroV3({ stats }: HeroV3Props) {
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-atlantean-teal-aqua/10 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-atlantean-teal-aqua" />
+                  <Lightning className="w-5 h-5 text-atlantean-teal-aqua" />
                 </div>
                 <div className="text-left">
                   <div className="text-2xl font-bold text-white">
@@ -369,7 +377,7 @@ export function HeroV3({ stats }: HeroV3Props) {
 
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-creation-prism-purple/10 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-creation-prism-purple" />
+                  <Sparkle className="w-5 h-5 text-creation-prism-purple" />
                 </div>
                 <div className="text-left">
                   <div className="text-2xl font-bold text-white">
