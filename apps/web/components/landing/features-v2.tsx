@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import {
   PhSparkle,
@@ -23,7 +24,9 @@ const MAIN_FEATURES = [
     description:
       "Each Luminor has internalized a specific Guardian archetype — patterns of how the greatest creators actually work. They will challenge a weak idea before you waste time building it.",
     gradient: "from-atlantean-teal-aqua to-creation-prism-purple",
-    highlight: "atlantean-teal-aqua",
+    activeClass:
+      "border-atlantean-teal-aqua/50 bg-gradient-to-br from-atlantean-teal-aqua/10 to-transparent",
+    learnMoreClass: "text-atlantean-aqua",
   },
   {
     icon: PhBrain,
@@ -31,7 +34,9 @@ const MAIN_FEATURES = [
     description:
       "Stuck? Lost? Afraid? Seven diagnostic lenses for the most common creative blocks. Sophron sees structure. Kardia feels heart. Valora demands courage. Each Wisdom reveals what you cannot see alone.",
     gradient: "from-gold-bright to-draconic-crimson",
-    highlight: "gold-bright",
+    activeClass:
+      "border-gold-bright/50 bg-gradient-to-br from-gold-bright/10 to-transparent",
+    learnMoreClass: "text-gold-bright",
   },
   {
     icon: PhUsers,
@@ -39,7 +44,9 @@ const MAIN_FEATURES = [
     description:
       "Each Gate corresponds to a specific creative capacity — from grounding your vision (174 Hz) to achieving meta-consciousness about creation itself (1111 Hz). Not gamification. A developmental framework.",
     gradient: "from-creation-prism-purple to-atlantean-teal-aqua",
-    highlight: "creation-prism-purple",
+    activeClass:
+      "border-creation-prism-purple/50 bg-gradient-to-br from-creation-prism-purple/10 to-transparent",
+    learnMoreClass: "text-creation-prism-purple",
   },
 ];
 
@@ -134,7 +141,7 @@ export function FeaturesV2() {
                 onMouseEnter={() => setActiveFeature(i)}
                 className={`group relative rounded-3xl border p-8 transition-all duration-500 cursor-pointer ${
                   activeFeature === i
-                    ? `border-${feature.highlight}/50 bg-gradient-to-br from-${feature.highlight}/10 to-transparent`
+                    ? feature.activeClass
                     : "border-white/10 bg-cosmic-surface/30 hover:border-white/20"
                 }`}
               >
@@ -156,15 +163,7 @@ export function FeaturesV2() {
                 {/* Learn more link */}
                 <div
                   aria-hidden="true"
-                  className={`mt-6 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity ${
-                    feature.highlight === "atlantean-teal-aqua"
-                      ? "text-atlantean-aqua"
-                      : feature.highlight === "gold-bright"
-                        ? "text-gold-bright"
-                        : feature.highlight === "creation-prism-purple"
-                          ? "text-creation-prism-purple"
-                          : "text-text-primary"
-                  }`}
+                  className={`mt-6 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity ${feature.learnMoreClass}`}
                 >
                   Learn more →
                 </div>
@@ -227,13 +226,13 @@ export function FeaturesV2() {
           transition={{ delay: 0.6 }}
           className="text-center mt-16"
         >
-          <a
+          <Link
             href="/luminors"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white/5 border border-white/10 font-semibold hover:bg-white/10 hover:border-white/20 transition-all"
           >
             <PhSparkle className="w-5 h-5 text-atlantean-teal-aqua" />
             Explore All Features
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

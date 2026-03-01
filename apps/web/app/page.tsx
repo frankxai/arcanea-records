@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getCollections, getAllTexts } from "@/lib/content";
 import {
@@ -16,18 +16,19 @@ import {
   CTASection,
 } from "@/components/landing";
 import { Navbar } from "@/components/navigation";
+import { Footer } from "@/components/navigation/footer";
 import {
-  PhSparkle,
   PhArrowRight,
-  PhCircleNotch,
   PhBooks,
-  PhGraduationCap,
-  PhPaintBrush,
-  PhHouse,
+  PhCircleNotch,
+  PhCode,
   PhDatabase,
   PhGraphNetwork,
-  PhCode,
+  PhGraduationCap,
+  PhHouse,
   PhLink,
+  PhPaintBrush,
+  PhSparkle,
 } from "@phosphor-icons/react";
 
 export const metadata: Metadata = {
@@ -48,23 +49,90 @@ export const metadata: Metadata = {
   },
 };
 
-// Loading skeleton for stats
-function StatsSkeleton() {
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-      {[1, 2, 3].map((i) => (
-        <div key={i} className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-white/5 animate-pulse" />
-          <div className="text-left">
-            <div className="h-6 w-16 bg-white/5 rounded animate-pulse mb-1" />
-            <div className="h-3 w-20 bg-white/5 rounded animate-pulse" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+type ResourceTone = "atlantean" | "gold" | "draconic";
+
+interface ResourceCard {
+  href: string;
+  icon: JSX.Element;
+  title: string;
+  description: string;
+  highlights: string[];
+  tone: ResourceTone;
 }
 
+interface EcosystemSurface {
+  href: string;
+  label: string;
+  icon: JSX.Element;
+  external?: boolean;
+}
+
+const RESOURCE_TONE_STYLES: Record<
+  ResourceTone,
+  {
+    border: string;
+    glow: string;
+    iconBg: string;
+    iconColor: string;
+    linkColor: string;
+  }
+> = {
+  atlantean: {
+    border: "border-atlantean-teal-aqua/30 hover:border-atlantean-teal-aqua/55",
+    glow: "from-atlantean-teal-aqua/20 via-atlantean-teal-aqua/5 to-transparent",
+    iconBg: "from-atlantean-teal-aqua/25 to-atlantean-teal-aqua/5",
+    iconColor: "text-atlantean-teal-aqua",
+    linkColor: "text-atlantean-teal-aqua",
+  },
+  gold: {
+    border: "border-gold-bright/30 hover:border-gold-bright/55",
+    glow: "from-gold-bright/20 via-gold-bright/5 to-transparent",
+    iconBg: "from-gold-bright/25 to-gold-bright/5",
+    iconColor: "text-gold-bright",
+    linkColor: "text-gold-bright",
+  },
+  draconic: {
+    border: "border-draconic-crimson/30 hover:border-draconic-crimson/55",
+    glow: "from-draconic-crimson/20 via-draconic-crimson/5 to-transparent",
+    iconBg: "from-draconic-crimson/25 to-draconic-crimson/5",
+    iconColor: "text-draconic-crimson",
+    linkColor: "text-draconic-crimson",
+  },
+};
+
+const ECOSYSTEM_SURFACES: EcosystemSurface[] = [
+  {
+    href: "/workspace",
+    label: "Workspace",
+    icon: <PhHouse className="h-4 w-4" />,
+  },
+  {
+    href: "/arcanea-vault",
+    label: "Vault Extension",
+    icon: <PhDatabase className="h-4 w-4" />,
+  },
+  {
+    href: "/arcanea-code",
+    label: "Agent Flow",
+    icon: <PhGraphNetwork className="h-4 w-4" />,
+  },
+  {
+    href: "/overlays",
+    label: "AI Overlays",
+    icon: <PhCode className="h-4 w-4" />,
+  },
+  {
+    href: "/academy",
+    label: "Academy",
+    icon: <PhGraduationCap className="h-4 w-4" />,
+  },
+  {
+    href: "https://github.com/frankxai/arcanea-onchain",
+    label: "On-Chain",
+    icon: <PhLink className="h-4 w-4" />,
+    external: true,
+  },
+];
 
 async function HomeContent() {
   const collections = await getCollections();
@@ -74,41 +142,52 @@ async function HomeContent() {
     0,
   );
 
-  const resources = [
+  const resources: ResourceCard[] = [
     {
       href: "/library",
-      icon: <PhBooks className="w-8 h-8 text-atlantean-teal-aqua" weight="thin" />,
-      title: "The Library",
-      description: `${collections.length} collections — laws, prophecies, meditations, parables. Original philosophy for the creative life.`,
-      accentColor: "text-atlantean-teal-aqua",
-      hoverColor: "border-atlantean-teal-aqua/30",
-      bgClass: "from-atlantean-teal-aqua/20 to-atlantean-teal-aqua/5",
+      icon: <PhBooks className="h-8 w-8" weight="thin" />,
+      title: "The Living Library",
+      description:
+        "Original texts, rituals, and mythic frameworks. Not generic content — a coherent body of practical creative philosophy.",
+      highlights: [
+        `${collections.length} curated collections`,
+        "34 original longform texts",
+        "Searchable by creative situation",
+      ],
+      tone: "atlantean",
     },
     {
       href: "/academy",
-      icon: <PhGraduationCap className="w-8 h-8 text-gold-bright" weight="thin" />,
+      icon: <PhGraduationCap className="h-8 w-8" weight="thin" />,
       title: "Academy",
       description:
-        "Each Gate unlocks a specific creative capacity — from grounding vision to finding authentic voice. Open all ten to become a Luminor.",
-      accentColor: "text-gold-bright",
-      hoverColor: "border-gold-bright/30",
-      bgClass: "from-gold-bright/20 to-gold-bright/5",
+        "The Ten Gates map real creative development — from Foundation to Source. A progression system with mythic precision.",
+      highlights: [
+        "Ten frequencies of mastery",
+        "Seven Wisdom diagnostics",
+        "Guardian-aligned progression",
+      ],
+      tone: "gold",
     },
     {
       href: "/studio",
-      icon: <PhPaintBrush className="w-8 h-8 text-draconic-crimson" weight="thin" />,
+      icon: <PhPaintBrush className="h-8 w-8" weight="thin" />,
       title: "Creation Studio",
       description:
-        "Create with Guardian-guided intelligence. Image, music, video, and story — each shaped by elemental archetypes.",
-      accentColor: "text-draconic-crimson",
-      hoverColor: "border-draconic-crimson/30",
-      bgClass: "from-draconic-crimson/20 to-draconic-crimson/5",
+        "Multi-modal creation with Guardian guidance: image, music, worldbuilding, and narrative flows that stay coherent.",
+      highlights: [
+        "Prompt books and overlays",
+        "Visual + narrative workflows",
+        "Elemental stylistic control",
+      ],
+      tone: "draconic",
     },
   ];
 
+  const formattedWords = new Intl.NumberFormat("en-US").format(totalWords);
+
   return (
     <>
-      {/* Hero Section - Premium V3 */}
       <HeroV3
         stats={{
           luminors: 16,
@@ -117,171 +196,227 @@ async function HomeContent() {
           words: totalWords,
         }}
       />
-
-      {/* Logos Section - Featured Publications */}
       <LogosSection />
-
-      {/* Social Proof - Trust Badges & Testimonials */}
       <SocialProof />
-
-      {/* Features Section - Premium V2 */}
       <FeaturesV2 />
-
-      {/* Luminor Showcase */}
       <LuminorShowcase />
-
-      {/* Seven Wisdoms */}
       <WisdomsSection />
-
-      {/* How It Works - Interactive Process */}
       <HowItWorks />
-
-      {/* Testimonials Carousel */}
       <TestimonialsV2 />
-
-      {/* Pricing Section */}
       <PricingSection />
-
-      {/* FAQ Section */}
       <FAQSection />
+      <section
+        className="relative overflow-hidden border-y border-white/5 py-28"
+        aria-labelledby="universe-heading"
+      >
+        <div className="pointer-events-none absolute inset-0 -z-20 bg-cosmic-void" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-cosmic-mesh opacity-70" />
+        <div className="pointer-events-none absolute left-0 top-0 -z-10 h-96 w-96 rounded-full bg-atlantean-teal-aqua/12 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 right-0 -z-10 h-96 w-96 rounded-full bg-creation-prism-purple/12 blur-3xl" />
 
-      {/* Resources Grid */}
-      <section className="py-24 border-t border-white/5 relative">
-        {/* Background glow */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-cosmic-void" />
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,rgba(139,92,246,0.1),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(127,255,212,0.08),transparent_55%)]" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            {/* Section badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-primary/30 bg-brand-primary/10 mb-6">
-              <PhSparkle className="w-3.5 h-3.5 text-brand-primary" />
-              <span className="text-xs font-mono tracking-widest uppercase text-brand-primary">
-                Explore
-              </span>
-            </div>
-
-            <h2 className="text-fluid-3xl font-display font-bold mb-4">
-              The Arcanea Universe
+        <div className="mx-auto w-full max-w-7xl px-6">
+          <header className="mb-12 text-center">
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-atlantean-teal-aqua/25 bg-atlantean-teal-aqua/10 px-4 py-2 font-sans text-xs uppercase tracking-[0.22em] text-atlantean-teal-aqua">
+              <PhSparkle className="h-3.5 w-3.5" />
+              Explore the universe
+            </span>
+            <h2 id="universe-heading" className="font-display text-fluid-4xl font-bold text-text-primary">
+              One mythology. Multiple worlds.
             </h2>
-            <p className="text-text-secondary max-w-2xl mx-auto font-body leading-relaxed">
-              A mythology, a library, and an academy. Explore the systems behind the intelligence.
+            <p className="mx-auto mt-4 max-w-3xl font-body text-fluid-base leading-relaxed text-text-secondary">
+              The Arcanea experience is layered by design: philosophy in the
+              Library, growth in the Academy, and manifestation in the Studio.
             </p>
-          </div>
+          </header>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {resources.map((resource, index) => (
-              <Link key={resource.href} href={resource.href} className="group">
+          <div className="grid gap-6 lg:grid-cols-12">
+            <Link
+              href={resources[0].href}
+              className={`group relative overflow-hidden rounded-[2rem] border bg-cosmic-surface/45 p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 ${RESOURCE_TONE_STYLES[resources[0].tone].border} lg:col-span-5`}
+            >
+              <div
+                className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-80 ${RESOURCE_TONE_STYLES[resources[0].tone].glow}`}
+              />
+              <div className="relative">
                 <div
-                  className={`relative h-full p-8 rounded-3xl border border-white/10 bg-cosmic-surface/30 hover:border-brand-primary/30 hover:bg-cosmic-surface/50 transition-all duration-300 hover:-translate-y-1`}
+                  className={`mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${RESOURCE_TONE_STYLES[resources[0].tone].iconBg} ${RESOURCE_TONE_STYLES[resources[0].tone].iconColor}`}
                 >
-                  {/* Glow effect */}
-                  <div
-                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{
-                      background:
-                        "radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.15), transparent 60%)",
-                    }}
-                  />
-
-                  <div className="relative z-10">
-                    <div
-                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${resource.bgClass} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      {resource.icon}
-                    </div>
-                    <h3 className="font-display text-xl font-semibold mb-3 group-hover:text-brand-primary transition-colors">
-                      {resource.title}
-                    </h3>
-                    <p className="text-sm text-text-secondary mb-4 font-body leading-relaxed">
-                      {resource.description}
-                    </p>
-                    <span className="text-sm text-brand-primary font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                      Explore
-                      <PhArrowRight className="w-4 h-4 transition-transform" />
-                    </span>
-                  </div>
+                  {resources[0].icon}
                 </div>
-              </Link>
-            ))}
+                <h3 className="mb-3 font-display text-fluid-2xl font-bold text-text-primary">
+                  {resources[0].title}
+                </h3>
+                <p className="mb-6 font-body leading-relaxed text-text-secondary">
+                  {resources[0].description}
+                </p>
+                <ul className="space-y-2">
+                  {resources[0].highlights.map((highlight) => (
+                    <li
+                      key={highlight}
+                      className="font-sans text-sm text-text-secondary before:mr-2 before:text-atlantean-teal-aqua before:content-['✦']"
+                    >
+                      {highlight}
+                    </li>
+                  ))}
+                </ul>
+                <span
+                  className={`mt-6 inline-flex items-center gap-1 font-sans text-sm font-semibold ${RESOURCE_TONE_STYLES[resources[0].tone].linkColor}`}
+                >
+                  Enter
+                  <PhArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </span>
+              </div>
+            </Link>
+
+            <div className="grid gap-6 md:grid-cols-2 lg:col-span-7">
+              {resources.slice(1).map((resource) => {
+                const toneStyles = RESOURCE_TONE_STYLES[resource.tone];
+                return (
+                  <Link
+                    key={resource.href}
+                    href={resource.href}
+                    className={`group relative overflow-hidden rounded-3xl border bg-cosmic-surface/35 p-7 backdrop-blur-lg transition-all duration-300 hover:-translate-y-1 ${toneStyles.border}`}
+                  >
+                    <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${toneStyles.glow}`} />
+                    <div className="relative">
+                      <div
+                        className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${toneStyles.iconBg} ${toneStyles.iconColor}`}
+                      >
+                        {resource.icon}
+                      </div>
+                      <h3 className="mb-2 font-display text-xl font-bold text-text-primary">
+                        {resource.title}
+                      </h3>
+                      <p className="mb-4 font-body text-sm leading-relaxed text-text-secondary">
+                        {resource.description}
+                      </p>
+                      <ul className="space-y-1.5">
+                        {resource.highlights.map((highlight) => (
+                          <li
+                            key={highlight}
+                            className="font-sans text-xs uppercase tracking-[0.08em] text-text-muted"
+                          >
+                            {highlight}
+                          </li>
+                        ))}
+                      </ul>
+                      <span className={`mt-5 inline-flex items-center gap-1 font-sans text-sm font-semibold ${toneStyles.linkColor}`}>
+                        Explore
+                        <PhArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="glass rounded-2xl border border-white/10 p-5">
+              <p className="font-sans text-xs uppercase tracking-[0.2em] text-text-muted">
+                Collections
+              </p>
+              <p className="mt-1 font-display text-3xl font-bold text-atlantean-teal-aqua">
+                {collections.length}
+              </p>
+            </div>
+            <div className="glass rounded-2xl border border-white/10 p-5">
+              <p className="font-sans text-xs uppercase tracking-[0.2em] text-text-muted">
+                Library words
+              </p>
+              <p className="mt-1 font-display text-3xl font-bold text-text-primary">
+                {formattedWords}
+              </p>
+            </div>
+            <div className="glass rounded-2xl border border-white/10 p-5">
+              <p className="font-sans text-xs uppercase tracking-[0.2em] text-text-muted">
+                Wisdom pathways
+              </p>
+              <p className="mt-1 font-display text-3xl font-bold text-gold-bright">7</p>
+            </div>
+            <div className="glass rounded-2xl border border-white/10 p-5">
+              <p className="font-sans text-xs uppercase tracking-[0.2em] text-text-muted">
+                Mastery gates
+              </p>
+              <p className="mt-1 font-display text-3xl font-bold text-creation-prism-purple">10</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Ecosystem strip */}
-      <section className="py-12 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-8">
-            <p className="text-xs font-mono tracking-[0.35em] uppercase text-crystal mb-2">The Ecosystem</p>
-            <h2 className="text-2xl font-display font-bold">One mythology. Many surfaces.</h2>
-          </div>
+      <section
+        className="relative overflow-hidden border-b border-white/5 py-16"
+        aria-labelledby="ecosystem-heading"
+      >
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-cosmic-void" />
+        <div className="mx-auto w-full max-w-7xl px-6">
+          <header className="mb-8 text-center">
+            <p className="mb-2 font-sans text-xs uppercase tracking-[0.3em] text-atlantean-teal-aqua">
+              The Ecosystem
+            </p>
+            <h2 id="ecosystem-heading" className="font-display text-fluid-2xl font-bold text-text-primary">
+              A single creative spine across every surface
+            </h2>
+          </header>
+
           <div className="flex flex-wrap justify-center gap-3">
-            <Link
-              href="/workspace"
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 hover:border-crystal/30 hover:bg-crystal/5 transition-all text-sm font-sans text-text-secondary hover:text-text-primary"
-            >
-              <PhHouse className="w-3.5 h-3.5 text-crystal" />
-              Workspace
-              <PhArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Link>
-            <Link
-              href="/arcanea-vault"
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 hover:border-crystal/30 hover:bg-crystal/5 transition-all text-sm font-sans text-text-secondary hover:text-text-primary"
-            >
-              <PhDatabase className="w-3.5 h-3.5 text-crystal" />
-              Vault Extension
-              <PhArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Link>
-            <Link
-              href="/arcanea-code"
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 hover:border-crystal/30 hover:bg-crystal/5 transition-all text-sm font-sans text-text-secondary hover:text-text-primary"
-            >
-              <PhGraphNetwork className="w-3.5 h-3.5 text-crystal" />
-              Agent Flow
-              <PhArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Link>
-            <Link
-              href="/overlays"
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 hover:border-crystal/30 hover:bg-crystal/5 transition-all text-sm font-sans text-text-secondary hover:text-text-primary"
-            >
-              <PhCode className="w-3.5 h-3.5 text-crystal" />
-              AI Overlays
-              <PhArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Link>
-            <Link
-              href="/academy"
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 hover:border-crystal/30 hover:bg-crystal/5 transition-all text-sm font-sans text-text-secondary hover:text-text-primary"
-            >
-              <PhGraduationCap className="w-3.5 h-3.5 text-crystal" />
-              Academy
-              <PhArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </Link>
-            <a
-              href="https://github.com/frankxai/arcanea-onchain"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/10 hover:border-crystal/30 hover:bg-crystal/5 transition-all text-sm font-sans text-text-secondary hover:text-text-primary"
-            >
-              <PhLink className="w-3.5 h-3.5 text-crystal" />
-              On-Chain
-              <PhArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </a>
+            {ECOSYSTEM_SURFACES.map((surface) => {
+              const commonClassName =
+                "group inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 bg-cosmic-surface/40 px-4 py-2 font-sans text-sm text-text-secondary transition-all duration-300 hover:border-atlantean-teal-aqua/40 hover:bg-atlantean-teal-aqua/10 hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-atlantean-teal-aqua/50";
+
+              if (surface.external) {
+                return (
+                  <a
+                    key={surface.href}
+                    href={surface.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={commonClassName}
+                    aria-label={`${surface.label} (opens in new tab)`}
+                  >
+                    <span className="text-atlantean-teal-aqua" aria-hidden="true">
+                      {surface.icon}
+                    </span>
+                    {surface.label}
+                    <PhArrowRight className="h-3.5 w-3.5 opacity-70 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </a>
+                );
+              }
+
+              return (
+                <Link key={surface.href} href={surface.href} className={commonClassName}>
+                  <span className="text-atlantean-teal-aqua" aria-hidden="true">
+                    {surface.icon}
+                  </span>
+                  {surface.label}
+                  <PhArrowRight className="h-3.5 w-3.5 opacity-70 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
       <CTASection />
 
-      {/* Quote Section */}
-      <section className="py-24 border-t border-white/5">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <blockquote className="text-3xl md:text-4xl lg:text-5xl font-display italic text-text-secondary leading-relaxed">
-            "Enter seeking, leave transformed, return whenever needed."
+      <section className="relative overflow-hidden py-28" aria-label="Arcanea closing statement">
+        <div className="pointer-events-none absolute inset-0 -z-20 bg-cosmic-void" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-cosmic-mesh opacity-70" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-atlantean-teal-aqua/10 via-creation-prism-purple/10 to-gold-bright/10 blur-3xl" />
+
+        <div className="mx-auto w-full max-w-4xl px-6 text-center">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold-bright/25 bg-gold-bright/10 px-4 py-2 font-sans text-xs uppercase tracking-[0.22em] text-gold-bright">
+            <PhSparkle className="h-3.5 w-3.5" />
+            The Arcanea Promise
+          </span>
+          <blockquote className="font-display text-fluid-4xl font-bold leading-tight text-text-primary">
+            “Enter seeking, leave transformed, return whenever needed.”
           </blockquote>
-          <cite className="block mt-8 text-sm text-text-muted font-mono tracking-wider">
+          <p className="mx-auto mt-6 max-w-2xl font-body text-fluid-base leading-relaxed text-text-secondary">
+            The future is shaped by creators who can hold vision, discipline, and
+            wonder in the same breath. Arcanea exists to train exactly that.
+          </p>
+          <cite className="mt-8 block font-mono text-xs uppercase tracking-[0.24em] text-text-muted">
             — The Library of Arcanea
           </cite>
         </div>
@@ -293,12 +428,12 @@ async function HomeContent() {
 // Loading component
 function HomeLoading() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">
-        <div className="w-16 h-16 rounded-2xl bg-brand-primary/20 flex items-center justify-center mx-auto mb-6">
-          <PhCircleNotch className="w-8 h-8 text-brand-primary animate-spin" />
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-atlantean-teal-aqua/20">
+          <PhCircleNotch className="h-8 w-8 animate-spin text-atlantean-teal-aqua" />
         </div>
-        <p className="text-text-secondary font-body">Entering the realm...</p>
+        <p className="font-body text-text-secondary">Entering the realm...</p>
       </div>
     </div>
   );
@@ -306,217 +441,12 @@ function HomeLoading() {
 
 export default function Page() {
   return (
-    <div className="relative min-h-screen">
-      {/* Navigation */}
+    <div className="relative left-1/2 right-1/2 min-h-screen w-screen -translate-x-1/2 overflow-x-clip">
       <Navbar />
-
-      <main>
-        <Suspense fallback={<HomeLoading />}>
-          <HomeContent />
-        </Suspense>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-white/5" aria-label="Site footer">
-        <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="grid md:grid-cols-4 gap-12">
-            {/* Brand */}
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" className="w-full h-full">
-                    <defs>
-                      <linearGradient id="footerGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stopColor="#7fffd4"/>
-                        <stop offset="48%" stopColor="#a78bfa"/>
-                        <stop offset="100%" stopColor="#9b59ff"/>
-                      </linearGradient>
-                      <radialGradient id="footerGlow" cx="50%" cy="35%" r="55%">
-                        <stop offset="0%" stopColor="#7fffd4" stopOpacity="0.14"/>
-                        <stop offset="100%" stopColor="#7fffd4" stopOpacity="0"/>
-                      </radialGradient>
-                    </defs>
-                    <ellipse cx="20" cy="18" rx="16" ry="14" fill="url(#footerGlow)"/>
-                    <path
-                      fillRule="evenodd"
-                      d="M 4 37 L 4 18 Q 4 4 20 4 Q 36 4 36 18 L 36 37 L 30 37 L 30 19 Q 30 10 20 10 Q 10 10 10 19 L 10 37 Z"
-                      fill="url(#footerGrad)"
-                    />
-                    <rect x="4" y="24" width="32" height="4" rx="2" fill="url(#footerGrad)"/>
-                    <circle cx="20" cy="4" r="2.5" fill="#ffffff" opacity="0.75"/>
-                  </svg>
-                </div>
-                <span className="font-display text-xl font-semibold bg-gradient-to-r from-atlantean-teal-aqua to-creation-prism-purple bg-clip-text text-transparent">
-                  Arcanea
-                </span>
-              </div>
-              <p className="text-text-secondary max-w-sm mb-6 font-body">
-                The antidote to a terrible future is imagining a good one.
-                Ten Guardians. Seven Wisdoms. A living mythology for the age of creation.
-              </p>
-              <div className="flex gap-4">
-                <a
-                  href="https://github.com/frankxai/arcanea"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Arcanea on GitHub (opens in new tab)"
-                  className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-colors"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </a>
-                <a
-                  href="https://twitter.com/arcanea_ai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Arcanea on X / Twitter (opens in new tab)"
-                  className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-colors"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                </a>
-                <a
-                  href="https://discord.gg/arcanea"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Arcanea Discord community (opens in new tab)"
-                  className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-colors"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-
-            {/* Links */}
-            <div>
-              <h4 className="font-display font-semibold mb-4">Platform</h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/luminors"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    Luminors
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/studio"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    Studio
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/library"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    Library
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/academy"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    Academy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/bestiary"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    Bestiary
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-display font-semibold mb-4">Company</h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/about"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/hub/updates"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    Updates
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/hub"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    Hub
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href="mailto:hello@arcanea.ai"
-                    className="text-text-muted hover:text-white transition-colors"
-                  >
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-text-muted">
-              © {new Date().getFullYear()} Arcanea. Building the future of creative intelligence.
-            </p>
-            <div className="flex gap-6 text-sm text-text-muted">
-              <Link
-                href="/privacy"
-                className="hover:text-white transition-colors"
-              >
-                Privacy
-              </Link>
-              <Link
-                href="/terms"
-                className="hover:text-white transition-colors"
-              >
-                Terms
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Suspense fallback={<HomeLoading />}>
+        <HomeContent />
+      </Suspense>
+      <Footer />
     </div>
   );
 }
