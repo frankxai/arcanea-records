@@ -405,7 +405,7 @@ pnpm install
 
 2. Configure environment variables:
 ```bash
-cp .env.mvp.example .env.local
+cp .env.example .env.local
 ```
 
 3. Set Supabase credentials:
@@ -423,7 +423,7 @@ supabase db push
 
 5. Start dev server:
 ```bash
-pnpm dev:web
+pnpm dev
 ```
 
 ---
